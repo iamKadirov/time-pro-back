@@ -1,5 +1,16 @@
 from rest_framework import serializers
-from .models import Card, ChartData, ContactInfo, DemoRequest, Plan, PlanFeature, Stats
+from .models import (
+  Card, 
+  ChartData, 
+  ContactInfo, 
+  DemoRequest, 
+  Plan, 
+  PlanFeature, 
+  Stats, 
+  PrivacyPolicy, 
+  TermsOfService,
+  CookiePolicy
+)
 import phonenumbers
 
 class DemoRequestSerializer(serializers.ModelSerializer):
@@ -43,16 +54,7 @@ class ChartDataSerializer(serializers.ModelSerializer):
             'chart_style',
             'labels',
             'values',
-        ]
-
-    def validate(self, data):
-        labels = data.get('labels', [])
-        values = data.get('values', [])
-
-        if len(labels) != len(values):
-            raise serializers.ValidationError("Labels and values must have the same length.")
-        return data
-    
+        ]    
 
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -95,3 +97,26 @@ class ContactSerializer(serializers.ModelSerializer):
             'address',
             'telegram_link'
         ]
+
+
+class PrivacyPolicySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivacyPolicy
+        fields = [
+            'title',
+            'content',
+        ]
+
+class TermsOfServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TermsOfService
+        fields = [
+            'title',
+            'content',
+        ]
+
+class CookiePolicySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CookiePolicy
+        fields = ['title', 'content']
+        

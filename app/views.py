@@ -2,11 +2,14 @@ from app.utils import send_telegram_message
 
 from .serializers import (
   DemoRequestSerializer,
+  PrivacyPolicySerializer,
   StatsSerializer, 
   ChartDataSerializer, 
   CardSerializer,
   PlanSerializer,
   ContactSerializer,
+  TermsOfServiceSerializer,
+  CookiePolicySerializer
   )
 from .models import (
   ChartData,
@@ -16,6 +19,9 @@ from .models import (
   Card, 
   Plan, 
   PlanFeature,
+  PrivacyPolicy,
+  TermsOfService,
+  CookiePolicy
 )
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -46,7 +52,7 @@ class StatsView(APIView):
         serializer = StatsSerializer(stats, many=True)
         return Response(serializer.data)
     
-class ChartDataListCreateView(generics.ListCreateAPIView):
+class ChartDataListView(generics.ListAPIView):
     queryset = ChartData.objects.all()
     serializer_class = ChartDataSerializer
 
@@ -76,3 +82,33 @@ class ContactView(APIView):
         serializer = ContactSerializer(contact)
         return Response(serializer.data)
     
+
+class PrivacyPolicyView(APIView):
+    def get(self, request):
+        policy = PrivacyPolicy.objects.first()
+
+        if not policy:
+            return Response({"detail": "Privacy policy not found."}, status=404)
+        
+        serializer = PrivacyPolicySerializer(policy)
+        return Response(serializer.data)
+    
+class TermsOfServiceView(APIView):
+    def get(self, request):
+        terms = TermsOfService.objects.first()
+
+        if not terms:
+            return Response({"detail": "No terms found"})
+
+        serializer = TermsOfServiceSerializer(terms)
+        return Response(serializer.data)
+    
+class CookiePolicyView(APIView):
+    def get(self, request):
+        cookie = CookiePolicy.objects.first()
+
+        if not cookie:
+            return Response({"detail": "No cookie policy found"})
+
+        serializer = CookiePolicySerializer(cookie)
+        return Response(serializer.data)
