@@ -1,3 +1,5 @@
+from app.utils import send_telegram_message
+
 from .serializers import (
   DemoRequestSerializer,
   StatsSerializer, 
@@ -18,10 +20,24 @@ from .models import (
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.utils.timezone import localtime
+
 
 class DemoRequestCreateView(generics.CreateAPIView):
     queryset = DemoRequest.objects.all()
     serializer_class = DemoRequestSerializer
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        formatted_time = localtime(instance.created_at).strftime('%Y-%m-%d | %H:%M:%S')
+        
+        message = f"""🆕 <b>New Demo Request!</b>
+
+👤 <b>Name:</b> {instance.first_name} {instance.last_name}
+📞 <b>Phone:</b> {instance.phone_number}
+📝 <b>Description:</b> <i>{instance.description}</i>
+📅 <b>Requested At:</b> {formatted_time} (uz)"""
+        send_telegram_message(message)
 
 
 class StatsView(APIView):
@@ -59,3 +75,4 @@ class ContactView(APIView):
         contact = ContactInfo.objects.first()
         serializer = ContactSerializer(contact)
         return Response(serializer.data)
+    
