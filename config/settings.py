@@ -27,8 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'app',
+    'app.apps.MainAppConfig',
     'drf_yasg',
+    'modeltranslation',
 ]
 
 MIDDLEWARE = [
@@ -115,3 +116,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TELEGRAM_BOT_TOKEN = '8754802193:AAE2vC5I_Lz9pEYf-vUhuEK3HZoTlFl5oQM'
 TELEGRAM_CHAT_ID = '7577341299'
+
+LANGUAGES = (
+    ('uz', 'Uzbek'),
+    ('en', 'English'),
+    ('ru', 'Russian'),
+    ('ms', 'Malay')
+)
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+MODELTRANSLATION_LANGUAGES = ('uz', 'en', 'ru', 'ms')

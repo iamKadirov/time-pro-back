@@ -55,9 +55,9 @@ class ChartData(models.Model):
 
 class Plan(models.Model):
     name = models.CharField(max_length=100)
-    price = models.CharField(max_length=50)
+    price = models.CharField(max_length=50, blank=True, null=True)
 
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     icon = models.CharField(max_length=100)
 
     is_popular = models.BooleanField(default=False)
