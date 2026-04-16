@@ -9,7 +9,7 @@ from .models import (
   CookiePolicy
 )
 class PlanTranslationOptions(TranslationOptions):
-    fields = ('description',)
+    fields = ('name', 'price', 'description')
 
 class PlanFeatureTranslationOptions(TranslationOptions):
     fields = ('text',)
@@ -23,10 +23,8 @@ class StatsTranslationOptions(TranslationOptions):
 class PrivacyPolicyTranslationOptions(TranslationOptions):
     fields = ('title', 'content')
 
-
 class TermsTranslationOptions(TranslationOptions):
     fields = ('title', 'content')
-
 
 class CookieTranslationOptions(TranslationOptions):
     fields = ('title', 'content')
