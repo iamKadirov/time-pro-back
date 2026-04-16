@@ -118,6 +118,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TELEGRAM_BOT_TOKEN = '8754802193:AAE2vC5I_Lz9pEYf-vUhuEK3HZoTlFl5oQM'
 TELEGRAM_CHAT_ID = '7577341299'
 
+JAZZMIN_SETTINGS = {
+    "site_title": "TimePro Admin",
+    "site_header": "TimePro Administration",
+    "site_brand": "TimePro",
+    "welcome_sign": "Welcome to the TimePro Administration Panel!",
+    "copyright": "TimePro Group",
+    "show_ui_builder": True,
+}
+
 LANGUAGES = (
     ('uz', 'Uzbek'),
     ('en', 'English'),
