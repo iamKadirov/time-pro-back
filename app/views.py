@@ -24,9 +24,9 @@ from .models import (
   CookiePolicy
 )
 from rest_framework import generics
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.timezone import localtime
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 
 class DemoRequestCreateView(generics.CreateAPIView):
@@ -46,69 +46,73 @@ class DemoRequestCreateView(generics.CreateAPIView):
         send_telegram_message(message)
 
 
-class StatsView(APIView):
-    def get(self, request):
-        stats = Stats.objects.filter(is_active=True).order_by('order')
-        serializer = StatsSerializer(stats, many=True)
-        return Response(serializer.data)
+class StatsView(ListAPIView):
+    serializer_class = StatsSerializer
+
+    def get_queryset(self):
+        return Stats.objects.filter(is_active=True).order_by('order')
     
 class ChartDataListView(generics.ListAPIView):
     queryset = ChartData.objects.all()
     serializer_class = ChartDataSerializer
 
 
-class FeaturesView(APIView):
-    def get(self, request):
-        features = Card.objects.filter(section='features', is_active=True).order_by('order')
-        serializer = CardSerializer(features, many=True)
-        return Response(serializer.data)
+class FeaturesView(ListAPIView):
+    serializer_class = CardSerializer
 
-class HowItWorksView(APIView):
-    def get(self, request):
-        how_it_works = Card.objects.filter(section='how', is_active=True).order_by('order')
-        serializer = CardSerializer(how_it_works, many=True)
-        return Response(serializer.data)
-    
+    def get_queryset(self):
+        return Card.objects.filter(section='features', is_active=True).order_by('order')
 
-class PlansView(APIView):
-    def get(self, request):
-        plans = Plan.objects.filter(is_active=True).order_by('order')
-        serializer = PlanSerializer(plans, many=True)
-        return Response(serializer.data)
-    
-class ContactView(APIView):
-    def get(self, request):
-        contact = ContactInfo.objects.first()
-        serializer = ContactSerializer(contact)
-        return Response(serializer.data)
-    
 
-class PrivacyPolicyView(APIView):
-    def get(self, request):
-        policy = PrivacyPolicy.objects.first()
+class HowItWorksView(ListAPIView):
+    serializer_class = CardSerializer
 
-        if not policy:
-            return Response({"detail": "Privacy policy not found."}, status=404)
-        
-        serializer = PrivacyPolicySerializer(policy)
-        return Response(serializer.data)
-    
-class TermsOfServiceView(APIView):
-    def get(self, request):
-        terms = TermsOfService.objects.first()
+    def get_queryset(self):
+        return Card.objects.filter(section='how', is_active=True).order_by('order')
 
-        if not terms:
-            return Response({"detail": "No terms found"})
 
-        serializer = TermsOfServiceSerializer(terms)
-        return Response(serializer.data)
-    
-class CookiePolicyView(APIView):
-    def get(self, request):
-        cookie = CookiePolicy.objects.first()
+class PlansView(ListAPIView):
+    serializer_class = PlanSerializer
 
-        if not cookie:
-            return Response({"detail": "No cookie policy found"})
+    def get_queryset(self):
+        return Plan.objects.filter(is_active=True).order_by('order')
 
-        serializer = CookiePolicySerializer(cookie)
-        return Response(serializer.data)
+
+class ContactView(RetrieveAPIView):
+    serializer_class = ContactSerializer
+
+    def get_object(self):
+        obj = ContactInfo.objects.first()
+        if not obj:
+            raise Exception("Contact info not found")  # minimal change
+        return obj
+
+
+class PrivacyPolicyView(RetrieveAPIView):
+    serializer_class = PrivacyPolicySerializer
+
+    def get_object(self):
+        obj = PrivacyPolicy.objects.first()
+        if not obj:
+            raise Exception("Privacy policy not found")
+        return obj
+
+
+class TermsOfServiceView(RetrieveAPIView):
+    serializer_class = TermsOfServiceSerializer
+
+    def get_object(self):
+        obj = TermsOfService.objects.first()
+        if not obj:
+            raise Exception("No terms found")
+        return obj
+
+
+class CookiePolicyView(RetrieveAPIView):
+    serializer_class = CookiePolicySerializer
+
+    def get_object(self):
+        obj = CookiePolicy.objects.first()
+        if not obj:
+            raise Exception("No cookie policy found")
+        return obj
