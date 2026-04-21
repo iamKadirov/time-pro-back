@@ -23,15 +23,15 @@ class DemoRequestSerializer(serializers.ModelSerializer):
             'description',
         ]
 
-    def validate_phone_number(self, value):
-        try:
-            parsed = phonenumbers.parse(value, None)
-            if not phonenumbers.is_valid_number(parsed):
-                raise serializers.ValidationError("Invalid phone number.")
-        except:
-            raise serializers.ValidationError("Invalid phone number format.")
+    # def validate_phone_number(self, value):
+    #     try:
+    #         parsed = phonenumbers.parse(value, None)
+    #         if not phonenumbers.is_valid_number(parsed):
+    #             raise serializers.ValidationError("Invalid phone number.")
+    #     except:
+    #         raise serializers.ValidationError("Invalid phone number format.")
         
-        return value
+    #     return value
     
 
 
