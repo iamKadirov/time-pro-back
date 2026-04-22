@@ -2,7 +2,7 @@ import requests
 from django.conf import settings
 
 token = settings.TELEGRAM_BOT_TOKEN
-chat_id = settings.TELEGRAM_CHAT_ID
+chat_id = settings.TELEGRAM_CHAT_IDS
 
 def send_telegram_message(message):
   url = f"https://api.telegram.org/bot{token}/sendMessage"
