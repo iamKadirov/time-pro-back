@@ -134,7 +134,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHAT_ID = config('TELEGRAM_CHAT_ID')
+TELEGRAM_CHAT_IDS = config('TELEGRAM_CHAT_IDS').split(',')
+TELEGRAM_CHAT_IDS = [int(x) for x in TELEGRAM_CHAT_IDS]
 
 JAZZMIN_SETTINGS = {
     "site_title": "TimePro Admin",

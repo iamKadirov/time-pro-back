@@ -7,11 +7,13 @@ chat_id = settings.TELEGRAM_CHAT_ID
 def send_telegram_message(message):
   url = f"https://api.telegram.org/bot{token}/sendMessage"
 
-  data = {
-    "chat_id": chat_id,
-    "text": message,
-    "parse_mode": "HTML"
-  }
+  for chat_id in settings.TELEGRAM_CHAT_IDS:
+      data = {
+          "chat_id": chat_id,
+          "text": message,
+          "parse_mode": "HTML"
+      }
+      requests.post(url, data=data)
   
   try:
     response = requests.post(url, data=data)
